@@ -29,7 +29,7 @@ The frontend for Progress Tracker is a React application built with Vite and sty
 ## Setup Instructions
 
 ### 1. Clone the Repository
-- **Clone the Progress Tracker repository to your local machine**: git clone https://code for clonning
+- **Clone the Progress Tracker repository to your local machine**: git clone https:(code for clonning)
 - **Navigate to the Frontend directory**: cd (filename)
 - **Install Dependencies**: npm install
 - **Run the Frontend**: npm run dev
