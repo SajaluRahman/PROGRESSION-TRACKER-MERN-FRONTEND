@@ -9,6 +9,7 @@ const ProjectList = () => {
   const [error, setError] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [editProjectId, setEditProjectId] = useState(null);
+  const [infoVisible, setInfoVisible] = useState({}); // Track visibility of mobile info text
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
@@ -75,6 +76,13 @@ const ProjectList = () => {
     }
   };
 
+  const toggleInfo = (projectId) => {
+    setInfoVisible((prev) => ({
+      ...prev,
+      [projectId]: !prev[projectId],
+    }));
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -87,7 +95,6 @@ const ProjectList = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             Your Projects
           </h2>
-          
         </div>
 
         {/* Create Project Form */}
@@ -187,7 +194,7 @@ const ProjectList = () => {
                 {projects.map((project) => (
                   <li
                     key={project._id}
-                    className="p-6 hover:bg-gray-50 transition-colors duration-200"
+                    className="p-6 hover:bg-gray-50 transition-colors duration-200 relative group"
                   >
                     {editProjectId === project._id ? (
                       <div className="space-y-4">
@@ -215,12 +222,27 @@ const ProjectList = () => {
                       </div>
                     ) : (
                       <div className="flex justify-between items-center">
-                        <Link
-                          to={`/projects/${project._id}/tasks`}
-                          className="text-xl font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                        >
-                          {project.title}
-                        </Link>
+                        <div className="flex items-center space-x-3">
+                          <Link
+                            to={`/projects/${project._id}/tasks`}
+                            className="text-xl font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                          >
+                            {project.title}
+                          </Link>
+                          {/* Mobile "!" Button */}
+                          <button
+                            onClick={() => toggleInfo(project._id)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                toggleInfo(project._id);
+                              }
+                            }}
+                            className="sm:hidden w-4 h-4 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+                            aria-label="Show project navigation info"
+                          >
+                            !
+                          </button>
+                        </div>
                         <div className="flex space-x-3">
                           <button
                             onClick={() => handleEditProject(project._id)}
@@ -235,6 +257,19 @@ const ProjectList = () => {
                             Delete
                           </button>
                         </div>
+                      </div>
+                    )}
+                    {/* Desktop Hover Text */}
+                    <div
+                      className="hidden sm:group-hover:block absolute top-0 left-1/2 transform -translate-x-1/2  px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200"
+                      aria-hidden="true"
+                    >
+                      Click the project name to continue
+                    </div>
+                    {/* Mobile Info Text */}
+                    {infoVisible[project._id] && (
+                      <div className="sm:hidden mt-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-lg">
+                        Click the project name to continue
                       </div>
                     )}
                   </li>

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+
 import api from '../api/api';
 
 const TaskList = () => {
@@ -12,7 +12,7 @@ const TaskList = () => {
   const [newTask, setNewTask] = useState({ title: '', description: '', status: 'To Do' });
   const [editTaskId, setEditTaskId] = useState(null);
   const [editTask, setEditTask] = useState({ title: '', description: '', status: '' });
-  const { logout } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const fetchTasks = async () => {
@@ -91,12 +91,7 @@ const TaskList = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             Tasks for Project
           </h2>
-          <button
-            onClick={() => logout()}
-            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
-          >
-            Log Out
-          </button>
+     
         </div>
 
         {/* Create Task Form */}
